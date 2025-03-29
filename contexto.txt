@@ -1,0 +1,8 @@
+Crie um projeto front end moderno e bonito que controla os gastos e ganhos de profissionais informais.
+Principais funcionalidades:
+1. Lançar uma conta a pagar.
+2. Lançar uma conta a receber.
+3. Exibir um resumo diário, semanal e mensal.
+4. Utilize as melhores técnicas de UX/UI para ser simples e rápido os lançamentos.
+5. Foco deverá ser layout responsivo para atender principalmente no celular.
+Observação: Por enquanto será somente a parte frontend.
