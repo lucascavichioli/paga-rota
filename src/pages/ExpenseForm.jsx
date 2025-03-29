@@ -12,6 +12,7 @@ import {
   InputAdornment
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import { NumericFormat } from 'react-number-format';
 import { useTransactions } from '../context/TransactionsContext';
 
 const categories = [
@@ -57,7 +58,7 @@ function ExpenseForm() {
     addTransaction({
       type: 'expense',
       description,
-      amount: Number(amount),
+      amount: Number(amount.replace(/\D/g, '')) / 100, // Convert from cents to real value
       category,
       date: date.toISOString(),
       notes,
@@ -88,6 +89,67 @@ function ExpenseForm() {
                   required
                   size="small" // Smaller on mobile
                   sx={{ '& .MuiInputLabel-root': { fontSize: { xs: '0.875rem', sm: '1rem' } } }}
+                />
+              </Grid>
+              
+              <Grid item xs={12}>
+                <NumericFormat
+                  customInput={TextField}
+                  label="Valor"
+                  fullWidth
+                  value={amount}
+                  onValueChange={(values) => {
+                    setAmount(values.value);
+                  }}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  decimalScale={2}
+                  fixedDecimalScale
+                  prefix="R$ "
+                  error={!!errors.amount}
+                  helperText={errors.amount}
+                  required
+                  size="small"
+                  sx={{ '& .MuiInputLabel-root': { fontSize: { xs: '0.875rem', sm: '1rem' } } }}
+                />
+              </Grid>
+              
+              <Grid item xs={12}>
+                <TextField
+                  select
+                  label="Categoria"
+                  fullWidth
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  error={!!errors.category}
+                  helperText={errors.category}
+                  required
+                  size="small"
+                  sx={{ '& .MuiInputLabel-root': { fontSize: { xs: '0.875rem', sm: '1rem' } } }}
+                >
+                  {categories.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+              
+              <Grid item xs={12}>
+                <DatePicker
+                  label="Data"
+                  value={date}
+                  onChange={(newDate) => setDate(newDate)}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      size: "small",
+                      required: true,
+                      error: !!errors.date,
+                      helperText: errors.date,
+                      sx: { '& .MuiInputLabel-root': { fontSize: { xs: '0.875rem', sm: '1rem' } } }
+                    }
+                  }}
                 />
               </Grid>
               

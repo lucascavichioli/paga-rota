@@ -12,6 +12,7 @@ import {
   InputAdornment
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
+import { NumericFormat } from 'react-number-format';
 import { useTransactions } from '../context/TransactionsContext';
 
 const categories = [
@@ -55,7 +56,7 @@ function IncomeForm() {
     addTransaction({
       type: 'income',
       description,
-      amount: Number(amount),
+      amount: Number(amount.replace(/\D/g, '')) / 100, // Convert from cents to real value
       category,
       date: date.toISOString(),
       notes,
@@ -88,15 +89,19 @@ function IncomeForm() {
               </Grid>
               
               <Grid item xs={12} sm={6}>
-                <TextField
+                <NumericFormat
+                  customInput={TextField}
                   label="Valor"
                   fullWidth
-                  type="number"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">R$</InputAdornment>,
-                  }}
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
+                  onValueChange={(values) => {
+                    setAmount(values.value);
+                  }}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  decimalScale={2}
+                  fixedDecimalScale
+                  prefix="R$ "
                   error={!!errors.amount}
                   helperText={errors.amount}
                   required
