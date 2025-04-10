@@ -75,6 +75,12 @@ export function TransactionsProvider({ children }) {
     }, 0);
   };
 
+  // Add this function to your TransactionsContext provider
+  const getAllTransactions = () => {
+    return transactions;
+  };
+  
+  // Make sure to include it in your context value
   const value = {
     transactions,
     addTransaction,
@@ -82,7 +88,8 @@ export function TransactionsProvider({ children }) {
     getDailySummary,
     getWeeklySummary,
     getMonthlySummary,
-    calculateBalance
+    calculateBalance,
+    getAllTransactions  // Add this line
   };
 
   return (

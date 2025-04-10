@@ -13,7 +13,9 @@ import {
   ListItemSecondaryAction, 
   IconButton,
   Chip,
-  Divider
+  Divider,
+  AppBar,
+  Toolbar
 } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
 import { format } from 'date-fns';
@@ -32,8 +34,13 @@ function Dashboard() {
     getWeeklySummary, 
     getMonthlySummary, 
     calculateBalance,
-    deleteTransaction
+    deleteTransaction,
+    getAllTransactions
   } = useTransactions();
+
+  // Get all transactions for the total balance calculation
+  const allTransactions = getAllTransactions();
+  const totalBalance = calculateBalance(allTransactions);
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
@@ -91,6 +98,25 @@ function Dashboard() {
 
   return (
     <Box>
+      {/* Add AppBar with total balance */}
+      <AppBar position="static" color="transparent" elevation={0} sx={{ mb: 3 }}>
+        <Toolbar>
+          <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h6" component="div">
+              Saldo Geral
+            </Typography>
+            <Typography 
+              variant="h6" 
+              component="div" 
+              color={totalBalance >= 0 ? 'success.main' : 'error.main'}
+              sx={{ fontWeight: 'bold' }}
+            >
+              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(totalBalance)}
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      
       <Box sx={{ maxWidth: { sm: '100%', md: '1200px' }, mx: 'auto' }}>
         <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
           Dashboard
